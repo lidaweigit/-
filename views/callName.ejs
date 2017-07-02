@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>牛逼点名系统</title>
+		<link rel="stylesheet" href="/css/style.css">
+	</head>
+
+	<body>
+		<h3>班级-sz1705</h3>
+		<h4 class="text">叶国州</h4>
+		<a href="javascript:;"><button class="startBtn">开始点名</button></a>
+		<a href="javascript:;"><button class="stopBtn">暂停</button></a>
+		<a href="/list" class="list">查看列表</a>
+		
+		
+		<script>
+			var list=<%- list %>;
+			var bjm='sz1705';
+			
+			var startBtnNode=document.querySelectorAll('.startBtn')[0];
+			var stopBtnNode=document.querySelectorAll('.stopBtn')[0];
+			var textNode=document.querySelectorAll('.text')[0];
+			
+			var max=list.length;
+			//设置一个定时器，随机抽取
+			var timer;
+			
+			startBtnNode.onclick=function(){
+				//点击一次后添加属性disabled，不能再次点击
+				this.setAttribute('disabled',true);
+				//定时器随机抽取姓名并显示到页面上
+				timer=setInterval(function(){
+					var random=Math.floor(Math.random()*max);
+					var selected=list[random];
+					textNode.innerHTML=selected.name;
+				},100);
+			}
+			//点击暂停按钮停止定时器，发起阿贾克斯请求修改次数
+			stopBtnNode.onclick=function(){
+				if(timer){
+					clearInterval(timer);
+					timer=null;
+					var name=textNode.innerHTML;
+					
+					var xhr=new XMLHttpRequest();
+					xhr.open('GET','http://localhost:3000/add?name='+name+'&i='+bjm);
+					xhr.send();
+					xhr.onreadystatechange=function(){
+						if(xhr.readyState==4&&xhr.status==200){
+							var result=JSON.parse(xhr.responseText);
+							if(result&&result.code==0){
+								alert('恭喜'+name+'中奖了');
+							}else{
+								alert('网络异常，请重试');
+							}
+						}
+					}
+					//解除disabled属性
+					startBtnNode.removeAttribute('disabled');
+				}
+			}
+			
+		</script>
+	</body>
+
+</html>

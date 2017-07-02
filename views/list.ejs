@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>牛逼点名系统</title>
+		<link rel="stylesheet" href="/css/style.css">
+	</head>
+
+	<body>
+		<h3>班级-sz1705</h3>
+		<table class="table" border="1">
+			<thead>
+				<tr>
+					<th style="width: 200px;">ID</th>
+					<th style="width: 500px;">姓名</th>
+					<th style="width: 700px;">中奖次数</th>
+				</tr>				
+			</thead>
+			<tbody>
+				<% for(var i = 0; i < list.length; i++) {%>
+					<tr>
+						<td><%= list[i]._id %></td>
+						<td><%= list[i].name %></td>
+						<td><%= list[i].count %></td>
+					</tr>
+				<%}%>
+			</tbody>
+		</table>
+		
+		<ul class="tabBtn">
+				
+				<% if (pageIndex == 1) {%>
+					<li class="disabled">
+			    		<a href="#"><span aria-hidden="true">&lt;&lt;</span></a>
+			    	</li>
+				<%} else {%>
+					<li>
+			    		<a href="?pageIndex=<%= (pageIndex - 1) %>"><span aria-hidden="true">&lt;&lt;</span></a>
+			    	</li>
+				<%}%>
+		    	
+		    	<% for (var i = 0; i < pages; i++) {%>
+			    	<% if (i + 1 == pageIndex) {%>
+						<li class="active">
+							<a href="javascript:;"><%= i + 1%></a>
+						</li>
+			    	<%} else {%>
+						<li>
+							<a href="?pageIndex=<%= +i + 1 %>"><%= i + 1%></a>
+						</li>
+			    	<%}%>
+		    	<%}%>
+
+				<% if (pageIndex == pages) {%>
+					<li class="disabled">
+			    		<a href="#" aria-label="Previous"><span aria-hidden="true">&gt;&gt;</span></a>
+			    	</li>
+				<%} else {%>
+					<li>
+			    		<a href="?pageIndex=<%= (+pageIndex + 1) %>" aria-label="Previous"><span aria-hidden="true">&gt;&gt;</span></a>
+			    	</li>
+				<%}%>
+		    	
+		  	</ul>
+	</body>
+
+</html>
